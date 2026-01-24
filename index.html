@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Strange Magic Circle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <video id="video" autoplay playsinline></video>
+        <canvas id="canvas"></canvas>
+        <canvas id="magicCanvas"></canvas>
+
+        <div class="instructions">
+            <h1>🪄 Dr. Strange Magic Circle</h1>
+            <p id="status">Initializing hand detection...</p>
+            <p class="hint">Show your palm to conjure the mystical arts!</p>
+        </div>
+
+        <div class="controls">
+            <button id="cameraToggle" class="control-btn">
+                <span id="cameraIcon">📷</span>
+                <span id="cameraText">Turn Off Camera</span>
+            </button>
+            <button id="trainGesture" class="control-btn training-btn">
+                <span id="trainIcon">🖐️</span>
+                <span id="trainText">Train Gesture</span>
+            </button>
+            <div id="handTracking" class="hand-indicator">
+                <span class="indicator-dot"></span>
+                <span class="indicator-text">No Hands Detected</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
