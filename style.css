@@ -1,0 +1,276 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvas,
+#magicCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+#video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scaleX(-1);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.instructions {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 4;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 20px 40px;
+    border-radius: 20px;
+    border: 2px solid rgba(255, 165, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(255, 165, 0, 0.2);
+}
+
+.instructions h1 {
+    color: #ff9500;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(255, 149, 0, 0.8);
+    letter-spacing: 2px;
+}
+
+.instructions p {
+    color: #fff;
+    font-size: 1.1em;
+    margin: 5px 0;
+}
+
+#status {
+    color: #ffa500;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.hint {
+    color: #ccc;
+    font-size: 0.9em !important;
+    font-style: italic;
+}
+
+/* Glowing animation */
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 8px 32px rgba(255, 165, 0, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 8px 32px rgba(255, 165, 0, 0.5);
+    }
+}
+
+.instructions {
+    animation: glow 3s ease-in-out infinite;
+}
+
+/* Controls section */
+.controls {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    z-index: 4;
+}
+
+/* Camera toggle button */
+.control-btn {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 165, 0, 0.5);
+    color: #ffa500;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(255, 165, 0, 0.3);
+}
+
+.control-btn:hover {
+    background: rgba(255, 165, 0, 0.2);
+    border-color: rgba(255, 165, 0, 0.8);
+    box-shadow: 0 6px 30px rgba(255, 165, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+#cameraIcon {
+    font-size: 1.3em;
+}
+
+.control-btn.off {
+    border-color: rgba(255, 50, 50, 0.5);
+    color: #ff5555;
+}
+
+.control-btn.off:hover {
+    border-color: rgba(255, 50, 50, 0.8);
+    box-shadow: 0 6px 30px rgba(255, 50, 50, 0.5);
+}
+
+/* Training Button */
+.training-btn {
+    border-color: rgba(0, 150, 255, 0.5);
+    color: #00ccff;
+}
+
+.training-btn:hover {
+    background: rgba(0, 150, 255, 0.2);
+    border-color: rgba(0, 200, 255, 0.8);
+    box-shadow: 0 6px 30px rgba(0, 150, 255, 0.5);
+}
+
+.training-btn.active {
+    background: rgba(0, 150, 255, 0.4);
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.8);
+    border-color: #fff;
+    color: #fff;
+    animation: pulse-blue 1s infinite;
+}
+
+@keyframes pulse-blue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 150, 255, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 150, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 150, 255, 0);
+    }
+}
+
+/* Training Mode Overlay */
+.training-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border: 4px dashed rgba(0, 255, 0, 0.5);
+    border-radius: 20px;
+    pointer-events: none;
+    display: none;
+    z-index: 10;
+}
+
+.training-mode .training-overlay {
+    display: block;
+    animation: dash-spin 10s linear infinite;
+}
+
+@keyframes dash-spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Hand tracking indicator */
+.hand-indicator {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(100, 100, 100, 0.5);
+    border-radius: 50px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.indicator-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #666;
+    box-shadow: 0 0 10px rgba(100, 100, 100, 0.5);
+    transition: all 0.3s ease;
+}
+
+.hand-indicator.active {
+    border-color: rgba(50, 255, 50, 0.6);
+}
+
+.hand-indicator.active .indicator-dot {
+    background: #00ff00;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.indicator-text {
+    color: #ccc;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.hand-indicator.active .indicator-text {
+    color: #00ff00;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
